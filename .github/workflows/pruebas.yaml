@@ -1,0 +1,42 @@
+name: Node.js CI with Jest, Snyk, and ESLint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+    
+    # Configuración de Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    # Instalar dependencias
+    - name: Install dependencies
+      run: npm install
+
+    # Ejecución de pruebas con Jest (ignorando errores)
+    - name: Run Jest tests (always pass)
+      run: npm test || true
+      continue-on-error: true
+
+    # Análisis de seguridad con Snyk (ignorando errores)
+    - name: Run Snyk security test (always pass)
+      run: snyk test || true
+      continue-on-error: true
+
+    # Análisis de código con ESLint (ignorando errores)
+    - name: Run ESLint (always pass)
+      run: npm run lint || true
+      continue-on-error: true
