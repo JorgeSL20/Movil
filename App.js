@@ -37,7 +37,7 @@ const HomeTabs = () => (
         return <Icon name={iconName} size={size} color={color} />;
       },
       tabBarActiveTintColor: 'tomato', // Color activo
-      tabBarInactiveTintColor: 'gray', // Color inactivo
+      tabBarInactiveTintColor: 'yellow', // Color inactivo
     })}
   >
     <Tab.Screen name="HomeTab" component={HomeScreen} options={{ title: 'Inicio' }} />
