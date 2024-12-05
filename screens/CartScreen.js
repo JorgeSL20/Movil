@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, Button, StyleSheet } from 'react-native';
 import CartService from '../services/CartService';
 
+
 const Carrito = () => {
   const [items, setItems] = useState([]);
   const [total, setTotal] = useState(0);
