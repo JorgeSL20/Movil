@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,6 +9,12 @@ import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import CartScreen from './screens/CartScreen';
 import UserScreen from './screens/UserScreen';
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://74b71162cd8239d7efd7e673f26301f2@o4508439367778304.ingest.us.sentry.io/4508439489347584',
+  // Otras configuraciones si las necesitas
+});
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,7 +28,6 @@ const HomeTabs = () => (
       tabBarIcon: ({ color, size }) => {
         let iconName;
 
-        // Define el icono según el nombre de la pestaña
         if (route.name === 'HomeTab') {
           iconName = 'home-outline';
         } else if (route.name === 'Cart') {
@@ -33,11 +38,10 @@ const HomeTabs = () => (
           iconName = 'log-out-outline';
         }
 
-        // Retorna el ícono con los colores y tamaños proporcionados
         return <Icon name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: 'blue', // Color activo
-      tabBarInactiveTintColor: 'grey', // Color inactivo
+      tabBarActiveTintColor: 'blue',
+      tabBarInactiveTintColor: 'grey',
     })}
   >
     <Tab.Screen name="HomeTab" component={HomeScreen} options={{ title: 'Inicio' }} />
@@ -49,7 +53,7 @@ const HomeTabs = () => (
       listeners={({ navigation }) => ({
         tabPress: e => {
           e.preventDefault();
-          navigation.navigate('Login'); // Redirige al login
+          navigation.navigate('Login');
         },
       })}
       options={{
@@ -60,13 +64,18 @@ const HomeTabs = () => (
 );
 
 export default function App() {
+  // Error intencional para probar Sentry
+  useEffect(() => {
+    // Lanza un error para probar la integración de Sentry
+    throw new Error('My first Sentry error!');
+  }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Iniciar Sesión' }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Registrarse' }} />
         <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
-       
       </Stack.Navigator>
     </NavigationContainer>
   );
