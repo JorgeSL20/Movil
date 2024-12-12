@@ -3,24 +3,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'; // Importa los íconos
-import { Text } from 'react-native';
-
-
 
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import CartScreen from './screens/CartScreen';
 import UserScreen from './screens/UserScreen';
-import * as Sentry from '@sentry/react-native';
+
+import * as Sentry from "@sentry/react-native";
 
 Sentry.init({
-  dsn: 'https://408d81b9692f59b527576740c02aae00@o4508439367778304.ingest.us.sentry.io/4508439796318208',
-
-  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
-  // enableSpotlight: __DEV__,
+  dsn: "https://74b71162cd8239d7efd7e673f26301f2@o4508439367778304.ingest.us.sentry.io/4508439489347584",
 });
-
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -70,7 +64,6 @@ const HomeTabs = () => (
 );
 
 function App() {
-  // Error intencional para probar Sentry
   useEffect(() => {
     try {
       // Lanza un error para probar la integración de Sentry
@@ -81,17 +74,14 @@ function App() {
   }, []);
 
   return (
-    
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
-          <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Iniciar Sesión' }} />
-          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Registrarse' }} />
-          <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Iniciar Sesión' }} />
+        <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Registrarse' }} />
+        <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
 
 export default Sentry.wrap(App);
