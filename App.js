@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons'; // Importa los íconos
+import Icon from 'react-native-vector-icons/Ionicons';
 
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
@@ -12,14 +12,15 @@ import UserScreen from './screens/UserScreen';
 
 import * as Sentry from "@sentry/react-native";
 
+// Inicializa Sentry
 Sentry.init({
   dsn: "https://74b71162cd8239d7efd7e673f26301f2@o4508439367778304.ingest.us.sentry.io/4508439489347584",
+  tracesSampleRate: 1.0,
 });
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-// Componente vacío reutilizable
 const EmptyScreen = () => null;
 
 const HomeTabs = () => (
@@ -53,28 +54,37 @@ const HomeTabs = () => (
       listeners={({ navigation }) => ({
         tabPress: e => {
           e.preventDefault();
+          Sentry.addBreadcrumb({
+            category: "navigation",
+            message: "User logged out",
+            level: "info",
+          });
           navigation.navigate('Login');
         },
       })}
-      options={{
-        title: 'Cerrar Sesión',
-      }}
+      options={{ title: 'Cerrar Sesión' }}
     />
   </Tab.Navigator>
 );
 
 function App() {
-  useEffect(() => {
-    try {
-      // Lanza un error para probar la integración de Sentry
-      throw new Error('My first Sentry error!');
-    } catch (error) {
-      Sentry.captureException(error); // Captura el error y lo envía a Sentry
-    }
-  }, []);
-
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      onStateChange={(state) => {
+        const currentRoute = state?.routes[state.routes.length - 1]?.name;
+
+        if (currentRoute) {
+          Sentry.addBreadcrumb({
+            category: "navigation",
+            message: `Navigated to ${currentRoute}`,
+            level: "info",
+          });
+
+          // Puedes usar captureMessage para enviar eventos importantes a Sentry
+          Sentry.captureMessage(`User navigated to ${currentRoute}`);
+        }
+      }}
+    >
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Iniciar Sesión' }} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Registrarse' }} />

@@ -1,28 +1,28 @@
 {
-    "cli": {
-      "version": ">= 12.6.0",
-      "appVersionSource": "remote"
+  "cli": {
+    "version": ">= 12.6.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
     },
-    "build": {
-      "development": {
-        "developmentClient": true,
-        "distribution": "internal"
-      },
-      "preview": {
-        "ios": {
-          "simulator": true
-        },
-        "android": {
-          "buildType": "apk"
-        }
-      },
-      "production": {
-        "android": {
-          "buildType": "apk"
-        }
+    "preview": {
+      "android": {
+        "buildType": "apk"
       }
     },
-    "submit": {
-      "production": {}
+    "production": {
+      "android": {
+        "buildType": "apk",
+        "env": {
+         "SENTRY_AUTH_TOKEN": "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"
+        }
+      }
     }
+  },
+  "submit": {
+    "production": {}
   }
+}
