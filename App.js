@@ -68,6 +68,13 @@ const HomeTabs = () => (
 );
 
 function App() {
+  // Función para generar un error intencionalmente
+  const generateError = () => {
+    throw new Error("Este es un error de prueba para Sentry");
+  };
+
+
+
   return (
     <NavigationContainer
       onStateChange={(state) => {
